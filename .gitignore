@@ -1,3 +1,5 @@
 .DS_Store
-model.d2v
-model.d2v.*
+*.d2v
+*.d2v.*
+__pycache__
+.vscode
