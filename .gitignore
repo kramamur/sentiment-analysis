@@ -3,3 +3,4 @@
 *.d2v.*
 __pycache__
 .vscode
+*/curate/*

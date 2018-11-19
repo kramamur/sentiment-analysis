@@ -6,6 +6,7 @@ from nltk.corpus import stopwords
 import logging
 import sys
 import string
+import pickle
 
 # Setup logger
 log = logging.getLogger()
@@ -18,10 +19,9 @@ ch.setFormatter(formatter)
 log.addHandler(ch)
 
 # Globals
-SAMPLE_SIZE = 50000
-SPLIT_SIZE  = 25000
 DIM_SIZE    = 152
 MODEL_FILE  = './model.d2v'
+META_FILE = MODEL_FILE + '.pickle'
 
 # clean and transform
 def transform(text):
