@@ -18,4 +18,5 @@ Citations
 1. Distributed Representations of Sentences and Documents
    tmikolov@,qlv@google.com, (https://arxiv.org/pdf/1405.4053v2.pdf)
 2. Large Movie Review Dataset, amaas@cs.stanford.edu (http://ai.stanford.edu/~amaas/papers/wvSent_acl2011.bib)
+3. Cornell sentiment polarity dataset, v2.0 (http://www.cs.cornell.edu/people/pabo/movie-review-data/)
 ```

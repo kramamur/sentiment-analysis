@@ -37,8 +37,8 @@ def transform(text):
     words = [word for word in stripped if word.isalpha()]
 
     # filter out stop words
-    stop_words = set(stopwords.words('english'))
-    words = [w for w in words if not w in stop_words]
+    #stop_words = set(stopwords.words('english'))
+    #words = [w for w in words if not w in stop_words]
 
     return words
 
@@ -55,6 +55,6 @@ def update_progress(progress):
         status = "Done...\r\n"
 
     block = int(round(barLength*progress))
-    text = "\Progress: [{0}] {1}% {2}".format( "="*block + " "*(barLength-block), int(progress*100), status)
+    text = "\rProgress: [{0}] {1}% {2}".format( "="*block + " "*(barLength-block), int(progress*100), status)
     sys.stdout.write(text)
     sys.stdout.flush()

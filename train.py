@@ -6,6 +6,10 @@ from gensim.models import Doc2Vec
 # others
 from random import shuffle
 import glob
+import numpy
+
+# classifier
+from sklearn.linear_model import LogisticRegression
 
 # globals
 from globals import DIM_SIZE
@@ -66,6 +70,10 @@ def train():
         alpha -= alpha_delta
     
     log.setLevel(logging.INFO)
+
+    # score
+    score(model, exDict["neg_size"], exDict["pos_size"])
+
     log.info('Saving to model file...')
     try:
         model.save(MODEL_FILE)
@@ -100,5 +108,47 @@ def get_srcs():
     log.info('Sample Size:' + str(neg_size+pos_size) + ' -ve:' + str(neg_size) + ' +ve:' + str(pos_size))
 
     return {"sources":sources, "neg_size":neg_size, "pos_size":pos_size}
+
+# let's score the accuracy
+def score(model, neg_size, pos_size):
+#def score():
+    log.info('Scoring with LogisticRegression...')
+
+    # we'll use 80/20 for train/test
+    ntrain_size = int(neg_size*0.8)
+    ptrain_size = int(pos_size*0.8)
+
+    ntest_size = neg_size - ntrain_size
+    ptest_size = pos_size - ptrain_size
+
+    # initialize the arrays    
+    train_docvecs = numpy.zeros((ntrain_size+ptrain_size, DIM_SIZE))
+    train_labels = numpy.zeros(ntrain_size+ptrain_size)
+
+    test_docvecs = numpy.zeros((ntest_size+ptest_size, DIM_SIZE))
+    test_labels = numpy.zeros(ntest_size+ptest_size)
+
+    for count in range(ntrain_size+ntest_size):
+        if count < ntrain_size:
+            train_docvecs[count] = model.docvecs['NEG_' + str(count)]
+            train_labels[count] = 0
+        else:
+            test_docvecs[count - ntrain_size] = model.docvecs['NEG_' + str(count)]
+            test_labels[count - ntrain_size] = 0
+
+    for count in range(ptrain_size+ptest_size):
+        if count < ptrain_size:
+            train_docvecs[ntrain_size + count] = model.docvecs['POS_' + str(count)]
+            train_labels[ntrain_size + count] = 1
+        else:
+            test_docvecs[ntest_size + count - ptrain_size] = model.docvecs['POS_' + str(count)]
+            test_labels[ntest_size + count - ptrain_size] = 1
+
+    log.info('Fitting classifier...')
+    clf = LogisticRegression()
+    clf.fit(train_docvecs, train_labels)
+
+    log.info('Score: '+str(clf.score(test_docvecs, test_labels)))
+
 
 if __name__ == "__main__": train()
