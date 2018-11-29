@@ -64,9 +64,6 @@ def infer():
 
     pred_sam = transform(text)
     log.info('Predicting on: %s' % pred_sam)
-    #pred = clf.predict(model.infer_vector(pred_sam.split(" ")).reshape(1, -1))
-    #log.info(pred)
-    #pred_lbl = clf.predict_proba(model.infer_vector(pred_sam.split(" ")).reshape(1, -1))
     pred_lbl = clf.predict_proba(model.infer_vector(pred_sam).reshape(1, -1))
     percent_neg = str('%.2f' % (pred_lbl[0,0]*100))
     percent_pos = str('%.2f' % (pred_lbl[0,1]*100))

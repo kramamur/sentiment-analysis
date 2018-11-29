@@ -146,6 +146,7 @@ def score(model, neg_size, pos_size):
 
     log.info('Fitting classifier...')
     clf = LogisticRegression()
+    #clf = MLPClassifier()
     clf.fit(train_docvecs, train_labels)
 
     log.info('Score: '+str(clf.score(test_docvecs, test_labels)))
